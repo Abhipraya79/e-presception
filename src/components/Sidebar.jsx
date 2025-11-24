@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -9,9 +9,10 @@ import {
   Pill,
   Stethoscope
 } from 'lucide-react';
+import { useSidebar } from './SidebarContext'; // Import context
 
 const Sidebar = ({ userType }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const { isOpen, setIsOpen } = useSidebar(); // Gunakan context
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,9 +33,7 @@ const Sidebar = ({ userType }) => {
 
   return (
     <>
-      {/* Sidebar */}
       <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
-        {/* Header */}
         <div className="sidebar-header">
           <div className="sidebar-brand">
             {userType === 'apoteker' ? <Pill size={24} /> : <Stethoscope size={24} />}
@@ -47,12 +46,12 @@ const Sidebar = ({ userType }) => {
           <button 
             className="toggle-btn" 
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle sidebar"
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
-        {/* Menu Items */}
         <nav className="sidebar-nav">
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -71,7 +70,6 @@ const Sidebar = ({ userType }) => {
           })}
         </nav>
 
-        {/* Logout Button */}
         <div className="sidebar-footer">
           <button className="logout-btn" onClick={handleLogout}>
             <LogOut size={20} />
@@ -88,7 +86,7 @@ const Sidebar = ({ userType }) => {
           height: 100vh;
           background: linear-gradient(180deg, #1e40af 0%, #1e3a8a 100%);
           color: white;
-          transition: width 0.3s ease;
+          transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           display: flex;
           flex-direction: column;
           z-index: 1000;
@@ -109,6 +107,7 @@ const Sidebar = ({ userType }) => {
           align-items: center;
           justify-content: space-between;
           border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          min-height: 80px;
         }
 
         .sidebar-brand {
@@ -117,6 +116,18 @@ const Sidebar = ({ userType }) => {
           gap: 12px;
           font-weight: 600;
           font-size: 18px;
+          overflow: hidden;
+        }
+
+        .sidebar-brand span {
+          white-space: nowrap;
+          opacity: 1;
+          transition: opacity 0.2s ease;
+        }
+
+        .sidebar.closed .sidebar-brand span {
+          opacity: 0;
+          width: 0;
         }
 
         .toggle-btn {
@@ -127,6 +138,7 @@ const Sidebar = ({ userType }) => {
           padding: 5px;
           border-radius: 4px;
           transition: background 0.2s;
+          flex-shrink: 0;
         }
 
         .toggle-btn:hover {
@@ -137,6 +149,7 @@ const Sidebar = ({ userType }) => {
           flex: 1;
           padding: 20px 0;
           overflow-y: auto;
+          overflow-x: hidden;
         }
 
         .nav-item {
@@ -149,6 +162,7 @@ const Sidebar = ({ userType }) => {
           transition: all 0.2s;
           margin: 4px 10px;
           border-radius: 8px;
+          white-space: nowrap;
         }
 
         .nav-item:hover {
@@ -160,6 +174,16 @@ const Sidebar = ({ userType }) => {
           background: rgba(255, 255, 255, 0.15);
           color: white;
           font-weight: 500;
+        }
+
+        .nav-item span {
+          opacity: 1;
+          transition: opacity 0.2s ease;
+        }
+
+        .sidebar.closed .nav-item span {
+          opacity: 0;
+          width: 0;
         }
 
         .sidebar-footer {
@@ -180,24 +204,52 @@ const Sidebar = ({ userType }) => {
           cursor: pointer;
           transition: background 0.2s;
           font-size: 14px;
+          white-space: nowrap;
         }
 
         .logout-btn:hover {
           background: rgba(239, 68, 68, 0.3);
         }
 
-        .sidebar.closed .sidebar-brand span,
-        .sidebar.closed .nav-item span,
+        .logout-btn span {
+          opacity: 1;
+          transition: opacity 0.2s ease;
+        }
+
         .sidebar.closed .logout-btn span {
-          display: none;
+          opacity: 0;
+          width: 0;
         }
 
         .sidebar.closed .sidebar-header {
           justify-content: center;
         }
 
-        .sidebar.closed .toggle-btn {
-          margin-left: 0;
+        .sidebar-nav::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 3px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+          .sidebar.open {
+            width: 260px;
+          }
+          
+          .sidebar.closed {
+            width: 0;
+          }
         }
       `}</style>
     </>

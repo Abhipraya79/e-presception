@@ -1,12 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Pill, Stethoscope, ArrowRight } from 'lucide-react';
+import { Pill, Stethoscope } from 'lucide-react';
+import backgroundImage from '../assets/OIP.jpg';
 
 const LoginSelector = () => {
   const navigate = useNavigate();
 
   return (
     <div className="login-selector-container">
+      <div className="background-overlay"></div>
       <div className="selector-content">
         <div className="header">
           <h1>E-RESEP</h1>
@@ -16,34 +18,26 @@ const LoginSelector = () => {
         <div className="cards-container">
           {/* Apoteker Card */}
           <div 
-            className="user-card apoteker-card"
+            className="user-card"
             onClick={() => navigate('/apoteker/login')}
           >
-            <div className="card-icon">
-              <Pill size={48} />
+            <div className="card-icon apoteker-icon">
+              <Pill size={40} />
             </div>
             <h2>Apoteker</h2>
             <p>Kelola resep dan penjualan obat</p>
-            <button className="card-button">
-              Masuk sebagai Apoteker
-              <ArrowRight size={20} />
-            </button>
           </div>
 
           {/* Dokter Card */}
           <div 
-            className="user-card dokter-card"
+            className="user-card"
             onClick={() => navigate('/dokter/login')}
           >
-            <div className="card-icon">
-              <Stethoscope size={48} />
+            <div className="card-icon dokter-icon">
+              <Stethoscope size={40} />
             </div>
             <h2>Dokter</h2>
             <p>Buat dan kelola resep pasien</p>
-            <button className="card-button">
-              Masuk sebagai Dokter
-              <ArrowRight size={20} />
-            </button>
           </div>
         </div>
       </div>
@@ -54,57 +48,77 @@ const LoginSelector = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           padding: 20px;
+          position: relative;
+          background-image: url(${backgroundImage});
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+
+        .background-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 1;
         }
 
         .selector-content {
-          max-width: 900px;
+          max-width: 800px;
           width: 100%;
+          position: relative;
+          z-index: 2;
         }
 
         .header {
           text-align: center;
           color: white;
-          margin-bottom: 50px;
+          margin-bottom: 60px;
         }
 
         .header h1 {
-          font-size: 48px;
+          font-size: 52px;
           font-weight: 700;
-          margin-bottom: 10px;
-          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+          margin-bottom: 12px;
+          text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+          letter-spacing: 2px;
         }
 
         .header p {
           font-size: 18px;
           opacity: 0.95;
+          text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+          font-weight: 300;
         }
 
         .cards-container {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 30px;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 40px;
+          padding: 0 20px;
         }
 
         .user-card {
           background: white;
-          border-radius: 20px;
-          padding: 40px 30px;
+          border-radius: 12px;
+          padding: 45px 35px;
           text-align: center;
           cursor: pointer;
           transition: all 0.3s ease;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         }
 
         .user-card:hover {
-          transform: translateY(-10px);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+          transform: translateY(-8px);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
         }
 
         .card-icon {
-          width: 100px;
-          height: 100px;
+          width: 90px;
+          height: 90px;
           margin: 0 auto 25px;
           border-radius: 50%;
           display: flex;
@@ -113,69 +127,61 @@ const LoginSelector = () => {
           transition: all 0.3s ease;
         }
 
-        .apoteker-card .card-icon {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .apoteker-icon {
+          background: #4318FF;
           color: white;
         }
 
-        .dokter-card .card-icon {
-          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        .dokter-icon {
+          background: #4318FF;
           color: white;
         }
 
         .user-card:hover .card-icon {
-          transform: scale(1.1) rotate(5deg);
+          transform: scale(1.08);
         }
 
         .user-card h2 {
-          font-size: 28px;
-          margin-bottom: 10px;
-          color: #333;
+          font-size: 26px;
+          margin-bottom: 12px;
+          color: #1a1a1a;
+          font-weight: 600;
         }
 
         .user-card p {
           color: #666;
-          margin-bottom: 25px;
-          font-size: 16px;
-        }
-
-        .card-button {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-          width: 100%;
-          padding: 14px 24px;
-          border: none;
-          border-radius: 10px;
-          font-size: 16px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .apoteker-card .card-button {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-        }
-
-        .dokter-card .card-button {
-          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-          color: white;
-        }
-
-        .card-button:hover {
-          transform: scale(1.05);
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+          margin-bottom: 0;
+          font-size: 15px;
+          line-height: 1.5;
         }
 
         @media (max-width: 768px) {
           .header h1 {
-            font-size: 36px;
+            font-size: 40px;
+          }
+
+          .header p {
+            font-size: 16px;
           }
 
           .cards-container {
             grid-template-columns: 1fr;
+            gap: 30px;
+            padding: 0 10px;
+          }
+
+          .user-card {
+            padding: 40px 30px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .header h1 {
+            font-size: 32px;
+          }
+
+          .header {
+            margin-bottom: 40px;
           }
         }
       `}</style>

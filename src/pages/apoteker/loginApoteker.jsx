@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Pill, Mail, Lock, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Pill, ArrowLeft } from 'lucide-react';
+import backgroundImage from '../../assets/OIP.jpg';
 
 const LoginApoteker = () => {
   const navigate = useNavigate();
@@ -8,7 +9,6 @@ const LoginApoteker = () => {
     email: '',
     password: ''
   });
-  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
@@ -22,7 +22,6 @@ const LoginApoteker = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Simple validation (Untuk production, gunakan backend API)
     if (formData.email === 'apoteker@eresep.com' && formData.password === 'apoteker123') {
       sessionStorage.setItem('apotekerAuthenticated', 'true');
       sessionStorage.setItem('apotekerEmail', formData.email);
@@ -34,18 +33,16 @@ const LoginApoteker = () => {
 
   return (
     <div className="login-container">
+      <div className="background-overlay"></div>
+      
       <button className="back-button" onClick={() => navigate('/')}>
         <ArrowLeft size={20} />
         Kembali
       </button>
 
       <div className="login-card">
-        <div className="login-icon">
-          <Pill size={48} />
-        </div>
-        
         <h1>Login Apoteker</h1>
-        <p className="subtitle">Masuk ke akun apoteker Anda</p>
+        <p className="subtitle">Enter your credentials to access your account</p>
 
         <form onSubmit={handleSubmit}>
           {error && (
@@ -56,51 +53,36 @@ const LoginApoteker = () => {
 
           <div className="form-group">
             <label>Email</label>
-            <div className="input-wrapper">
-              <Mail size={20} className="input-icon" />
-              <input
-                type="email"
-                name="email"
-                placeholder="apoteker@eresep.com"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="form-group">
             <label>Password</label>
-            <div className="input-wrapper">
-              <Lock size={20} className="input-icon" />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                placeholder="Masukkan password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <button type="submit" className="submit-button">
-            Masuk
+            SIGN IN
           </button>
-        </form>
 
-        <div className="demo-info">
-          <p><strong>Demo Credentials:</strong></p>
-          <p>Email: apoteker@eresep.com</p>
-          <p>Password: apoteker123</p>
-        </div>
+          <div className="forgot-password">
+            Forgot your password? <a href="#reset">Reset Password</a>
+          </div>
+        </form>
       </div>
 
       <style jsx="true">{`
@@ -109,9 +91,22 @@ const LoginApoteker = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           padding: 20px;
           position: relative;
+          background-image: url(${backgroundImage});
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+
+        .background-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 1;
         }
 
         .back-button {
@@ -122,61 +117,58 @@ const LoginApoteker = () => {
           align-items: center;
           gap: 8px;
           padding: 10px 20px;
-          background: rgba(255, 255, 255, 0.2);
-          border: none;
+          background: rgba(255, 255, 255, 0.25);
+          border: 1px solid rgba(255, 255, 255, 0.3);
           border-radius: 8px;
           color: white;
           cursor: pointer;
           transition: all 0.3s;
           font-size: 14px;
+          z-index: 10;
+          backdrop-filter: blur(10px);
         }
 
         .back-button:hover {
-          background: rgba(255, 255, 255, 0.3);
+          background: rgba(255, 255, 255, 0.35);
+          transform: translateX(-3px);
         }
 
         .login-card {
           background: white;
-          border-radius: 20px;
-          padding: 50px 40px;
-          max-width: 450px;
+          border-radius: 12px;
+          padding: 50px 45px;
+          max-width: 420px;
           width: 100%;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .login-icon {
-          width: 80px;
-          height: 80px;
-          margin: 0 auto 20px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+          position: relative;
+          z-index: 2;
         }
 
         h1 {
           text-align: center;
-          color: #333;
-          margin-bottom: 10px;
-          font-size: 32px;
+          color: #1a1a1a;
+          margin-bottom: 8px;
+          font-size: 28px;
+          font-weight: 600;
         }
 
         .subtitle {
           text-align: center;
           color: #666;
-          margin-bottom: 30px;
+          margin-bottom: 35px;
+          font-size: 14px;
+          font-weight: 400;
         }
 
         .error-message {
           background: #fee;
           color: #c33;
           padding: 12px;
-          border-radius: 8px;
+          border-radius: 6px;
           margin-bottom: 20px;
           text-align: center;
           border: 1px solid #fcc;
+          font-size: 14px;
         }
 
         .form-group {
@@ -188,80 +180,81 @@ const LoginApoteker = () => {
           margin-bottom: 8px;
           color: #333;
           font-weight: 500;
-        }
-
-        .input-wrapper {
-          position: relative;
-          display: flex;
-          align-items: center;
-        }
-
-        .input-icon {
-          position: absolute;
-          left: 15px;
-          color: #999;
+          font-size: 14px;
         }
 
         input {
           width: 100%;
-          padding: 14px 45px;
-          border: 2px solid #e0e0e0;
-          border-radius: 10px;
-          font-size: 16px;
+          padding: 12px 16px;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          font-size: 14px;
           transition: all 0.3s;
+          box-sizing: border-box;
         }
 
         input:focus {
           outline: none;
           border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .toggle-password {
-          position: absolute;
-          right: 15px;
-          background: none;
-          border: none;
-          color: #999;
-          cursor: pointer;
-          padding: 0;
+        input::placeholder {
+          color: #aaa;
         }
 
         .submit-button {
           width: 100%;
-          padding: 16px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 14px;
+          background: #4318FF;
           color: white;
           border: none;
-          border-radius: 10px;
-          font-size: 16px;
+          border-radius: 6px;
+          font-size: 14px;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.3s;
           margin-top: 10px;
+          letter-spacing: 0.5px;
         }
 
         .submit-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+          background: #3614cc;
+          box-shadow: 0 4px 12px rgba(67, 24, 255, 0.3);
         }
 
-        .demo-info {
-          margin-top: 30px;
-          padding: 15px;
-          background: #f5f5f5;
-          border-radius: 8px;
+        .forgot-password {
+          margin-top: 20px;
           text-align: center;
-          font-size: 14px;
+          font-size: 13px;
           color: #666;
         }
 
-        .demo-info p {
-          margin: 5px 0;
+        .forgot-password a {
+          color: #4318FF;
+          text-decoration: none;
+          font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+          text-decoration: underline;
         }
 
         @media (max-width: 768px) {
           .login-card {
             padding: 40px 30px;
+            max-width: 380px;
+          }
+
+          .back-button {
+            top: 10px;
+            left: 10px;
+            padding: 8px 16px;
+            font-size: 13px;
+          }
+
+          h1 {
+            font-size: 24px;
           }
         }
       `}</style>
